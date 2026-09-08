@@ -30,8 +30,8 @@ The options first state each option's name, followed by a colon, then whether th
 File utils offers the following commands:
 
 All files:\
-cp-it\
-find-name
+`cp-it`\
+`find-name`
 
 Text:\
-find-content
+`find-content`
