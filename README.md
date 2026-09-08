@@ -25,7 +25,7 @@ Example:
 ```console
 file-utils find-name -h
 ```
-The options first state each option's name, followed by a colon, then whether the option needs to be specified and then the meaning in brackets. If you want to specify an option where specification is not necessary, preceded by an option you don't want to specify, use the according flags.
+The options first state each option's name, followed by a colon, then whether the option is necessary and then the meaning in brackets. If you want to specify an option where specification is not necessary, preceded by an option you don't want to specify, use the according flags.
 
 File utils offers the following commands:
 
