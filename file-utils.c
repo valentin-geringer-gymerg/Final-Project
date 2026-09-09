@@ -98,18 +98,21 @@ int main(int argc, char *argv[])
                 continue;
             }
 
-            for (int j = 0; j < (strlen(argv[i]) + 1); j++)
+            for (int j = 0; j < (strlen(argv[i])); j++)
             {
+                printf("%i, %i was changed to %c", flags_cur_index, j, argv[i][j]);
                 flags[flags_cur_index][j] = argv[i][j];
             }
+            flags[flags_cur_index][strlen(argv[i]) + 1] = '\0';
             flags_cur_index += 1;
             print("Flag");
             continue;
         }
-        for (int j = 0; j < (strlen(argv[i]) + 1); j++)
+        for (int j = 0; j < (strlen(argv[i])); j++)
         {
             options[options_cur_index][j] = argv[i][j];
         }
+        options[options_cur_index][strlen(argv[i]) + 1] = '\0';
         options_cur_index += 1;
         print("Option");
     }
