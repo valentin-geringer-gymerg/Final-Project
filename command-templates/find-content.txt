@@ -1,0 +1,4 @@
+Searches for text files that have certain content in them
+file-utils find-content [content] [directory]
+content: necessary (The content to look for)
+directory: optional (The directory to search in, defaults to the directory the command is ran in)

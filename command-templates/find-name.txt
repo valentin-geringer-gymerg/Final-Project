@@ -1,0 +1,4 @@
+finds the files that have the specified name or if none were found the files that have the given name in their name
+file-utils find-name [name] [directory]
+name: necessary (The name to look for)
+directory: optional (Defaults to directory command is ran in)
