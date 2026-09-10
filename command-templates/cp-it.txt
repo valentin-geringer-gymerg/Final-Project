@@ -1,7 +1,12 @@
-copies a file multiple times and renames it iteratively(e.g. file01.txt, file02.txt, ... file10.txt)
-file-utils cp-it [file] [amount] [start] [directory]
+Copies a file multiple times and renames it iteratively(e.g. file01.txt, file02.txt, ... file10.txt)
+Usage: file-utils cp-it [file] [amount] [start] [directory]
+
+Options:
 
 file: necessary (The file to be copied)
 amount: necessary (The amount of copies to create)
 start: optional (The number where the counting should start, if not given, tries to find number at the end of [file] and uses following number as start, and otherwise uses 0)
 directory: optional (The directory the files should be copied into, if not given, defaults to directory of [file])
+
+Flags:
+-h: Show information and template

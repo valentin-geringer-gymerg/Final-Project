@@ -1,4 +1,13 @@
 Searches for text files that have certain content in them
-file-utils find-content [content] [directory]
+Usage: file-utils find-content [content] [directory]
+
+Options:
+
 content: necessary (The content to look for)
 directory: optional (The directory to search in, defaults to the directory the command is ran in)
+
+Flags:
+
+-c: Make search case-insensitive
+-e: Require content to match exactly
+-h: Show information and template

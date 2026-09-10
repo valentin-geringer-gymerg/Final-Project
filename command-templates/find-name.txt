@@ -1,4 +1,13 @@
-finds the files that have the specified name or if none were found the files that have the given name in their name
-file-utils find-name [name] [directory]
+Finds the files that have the specified name
+Usage: file-utils find-name [name] [directory]
+
+Options:
+
 name: necessary (The name to look for)
 directory: optional (Defaults to directory command is ran in)
+
+Flags:
+
+-c: Make search case-insensitive
+-h: Show information and template
+-s: Search for files that have the specified name in their name as a substring instead
