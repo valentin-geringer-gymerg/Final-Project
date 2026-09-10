@@ -65,56 +65,53 @@ int main(int argc, char *argv[])
         return 2;
     }
 
+    // Get directory command is ran in
     if (getcwd(cur_path, sizeof(cur_path)) == NULL)
     {
         print("Error 3: Could not get directory command is ran in");
         return 3;
     }
     
-    char options[commands[command_index].max_options][LONGEST_OPTION];
+    char *options[commands[command_index].max_options];
     int options_cur_index = 0;
-    char flags[commands[command_index].max_flags][LONGEST_FLAG];
+    char *flags[commands[command_index].max_flags];
     int flags_cur_index = 0;
 
     for (int i = 2; i < argc; i++)
     {
+
+        for (int i = 0; i < flags_cur_index; i++)
+        {
+            printf("Flag %i: %s\n", i, flags[i]);
+        }
+
+        for (int i = 0; i < options_cur_index; i++)
+        {
+            printf("Option %i: %s\n", i, options[i]);
+        }
+
         if (argv[i][0] == '-')
         {
-            bool already_given = false;
-
-            for (int j = 0; j < (flags_cur_index + 1); j++)
-            {
-                printf("%s, %s\n", argv[i], flags[j]);
-                if (!strcmp(argv[i], flags[j]))
-                {
-                    already_given = true;
-                    break;
-                }
-            }
-
-            if (already_given)
-            {
-                print("Flag ignored because it already exists");
-                continue;
-            }
-
-            for (int j = 0; j < (strlen(argv[i])); j++)
-            {
-                printf("%i, %i was changed to %c", flags_cur_index, j, argv[i][j]);
-                flags[flags_cur_index][j] = argv[i][j];
-            }
-            flags[flags_cur_index][strlen(argv[i]) + 1] = '\0';
+            flags[flags_cur_index] = argv[i];
             flags_cur_index += 1;
-            print("Flag");
+            printf("Added Flag %s to index %i\n", flags[flags_cur_index - 1], flags_cur_index - 1);
+            //print("Flag");
             continue;
         }
-        for (int j = 0; j < (strlen(argv[i])); j++)
-        {
-            options[options_cur_index][j] = argv[i][j];
-        }
-        options[options_cur_index][strlen(argv[i]) + 1] = '\0';
+        options[options_cur_index] = argv[i];
         options_cur_index += 1;
-        print("Option");
+        printf("Added Option %s to index %i\n", options[options_cur_index - 1], options_cur_index - 1);
+        //print("Option");
+    }
+
+    for (int i = 0; i < flags_cur_index; i++)
+    {
+        printf("Flag %i: %s\n", i, flags[i]);
+    }
+
+    for (int i = 0; i < options_cur_index; i++)
+    {
+        printf("Option %i: %s\n", i, options[i]);
     }
 
 }
