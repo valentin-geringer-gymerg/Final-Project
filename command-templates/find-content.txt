@@ -9,5 +9,5 @@ directory: optional (The directory to search in, defaults to the directory the c
 Flags:
 
 -c: Make search case-insensitive
--e: Require content to match exactly
+-e: Require file to only have specified content(And nothing else)
 -h: Show information and template
