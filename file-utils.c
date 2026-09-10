@@ -2,6 +2,7 @@
 #include <linux/limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -29,6 +30,8 @@ bool command_exists = false;
 int command_index = -1;
 
 char cur_path[PATH_MAX];
+
+bool using_help_flag = false;
 
 int main(int argc, char *argv[])
 {
@@ -106,6 +109,10 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < flags_cur_index; i++)
     {
+        if (!strcmp(flags[i], "-h"))
+        {
+            using_help_flag = true;
+        }
         printf("Flag %i: %s\n", i, flags[i]);
     }
 
@@ -114,4 +121,32 @@ int main(int argc, char *argv[])
         printf("Option %i: %s\n", i, options[i]);
     }
 
+    if (using_help_flag)
+    {
+        char *prefix = "command-templates/";
+        char *suffix = ".txt";
+        char *command_name = commands[command_index].name;
+        char *first_cat = malloc(sizeof(prefix) + sizeof(command_name));
+
+        for (int i = 0; i < (strlen(prefix) + 1); i++)
+        {
+            first_cat[i] = prefix[i];
+        }
+        strcat(first_cat, command_name);
+
+        char *second_cat = malloc(sizeof(first_cat) + sizeof(suffix));
+
+        for (int i = 0; i < (strlen(first_cat) + 1); i++)
+        {
+            second_cat[i] = first_cat[i];
+        }
+
+        strcat(second_cat, suffix);
+        for (int i = 0; i < (strlen(second_cat) + 1); i++)
+        {
+            printf("%c, %i\n", second_cat[i], second_cat[i]);
+        }
+        printf("%s\n", second_cat);
+        //FILE *file = fopen(second_cat, "r");
+    }
 }
