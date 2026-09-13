@@ -1,1 +1,1 @@
-error_message cp_it();
+error_message cp_it(char* options[], char* flags[], char* path);

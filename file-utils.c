@@ -1,7 +1,6 @@
 #include "command-code/cp-it.h"
 #include "command-code/find-content.h"
 #include "command-code/find-name.h"
-#include "helpers.h"
 #include <linux/limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -128,17 +127,17 @@ int main(int argc, char *argv[])
     result.message = "Error 7: Could not run command";
 
     char* command_to_run = commands[command_index].name;
-    if (command_to_run == "cp-it")
+    if (!strcmp(command_to_run, "cp-it"))
     {   
-        result = cp_it();
+        result = cp_it(options, flags, cur_path);
     }
 
-    if (command_to_run == "find-content")
+    if (!strcmp(command_to_run, "find-content"))
     {
         result = find_content();
     }
 
-    if (command_to_run == "find-name")
+    if (!strcmp(command_to_run, "find-name"))
     {
         result = find_name();
     }
