@@ -42,6 +42,8 @@ bool using_help_flag = false;
 
 error_message get_help(int command_index);
 
+void print_list(void);
+
 int main(int argc, char *argv[])
 {
 
@@ -55,12 +57,7 @@ int main(int argc, char *argv[])
     // Check whether user wants to see the command list
     if ((argc == 2) && (!strcmp(argv[1],"-h")))
     {   
-        print("You can use the following commands: ");
-        for (int i = 0; i < COMMAND_COUNT; i++)
-        {
-            print(commands[i].name);
-        }
-        print("For command-specific information use ./file-utils [command] -h");
+        print_list();
         return 0;
     }
 
@@ -102,15 +99,11 @@ int main(int argc, char *argv[])
             // Add arg to flags
             flags[flags_cur_index] = argv[i];
             flags_cur_index += 1;
-            //printf("Added Flag %s to index %i\n", flags[flags_cur_index - 1], flags_cur_index - 1);
-            //print("Flag");
             continue;
         }
         // Else add arg to options
         options[options_cur_index] = argv[i];
         options_cur_index += 1;
-        //printf("Added Option %s to index %i\n", options[options_cur_index - 1], options_cur_index - 1);
-        //print("Option");
     }
 
     // Check whether user wants to see information about the command
@@ -120,7 +113,6 @@ int main(int argc, char *argv[])
         {
             using_help_flag = true;
         }
-        //printf("Flag %i: %s\n", i, flags[i]);
     }
 
     // If the user uses the help flag, provide information about the command
@@ -134,6 +126,7 @@ int main(int argc, char *argv[])
         }
         return result.error;
     }
+    return 0;
 }
 
 
@@ -186,7 +179,6 @@ error_message get_help(int command_index)
         strcat(second_cat, suffix);
         // Free the first string's memory as it is not needed anymore
         free(first_cat);
-        //printf("%s\n", second_cat);
         // Open command information file
         FILE *file = fopen(second_cat, "r");
         // Make sure file could be opened
@@ -213,4 +205,14 @@ error_message get_help(int command_index)
         result.message = "";
         result.error = 0;
         return result;
+}
+
+void print_list(void)
+{
+    print("You can use the following commands: ");
+        for (int i = 0; i < COMMAND_COUNT; i++)
+        {
+            print(commands[i].name);
+        }
+    print("For command-specific information use ./file-utils [command] -h");
 }
