@@ -24,6 +24,13 @@ command commands[] =
     {"find-name", 1, 2, 3},
 };
 
+typedef struct
+{
+    char* message;
+    int error;
+} error_message;
+
+
 const int COMMAND_COUNT = sizeof(commands)/sizeof(command);
 
 bool command_exists = false;
@@ -32,6 +39,84 @@ int command_index = -1;
 char cur_path[PATH_MAX];
 
 bool using_help_flag = false;
+
+error_message get_help(int command_index)
+{
+        error_message result;
+
+        char *prefix = "command-templates/";
+        char *suffix = ".txt";
+        char *command_name = commands[command_index].name;
+        // Allocate memory for the first concatenation
+        char *first_cat = malloc(sizeof(char) * (strlen(prefix) + strlen(command_name) + 1));
+
+        // Make sure memory was successfully allocated
+        if (first_cat == NULL)
+        {   
+            result.message = "Error 6: Could not allocate memory";
+            result.error =  6;
+            return result;
+        }
+
+        // Copy the prefix to the allocated memory
+        for (int i = 0; i < (strlen(prefix) + 1); i++)
+        {
+            first_cat[i] = prefix[i];
+        }
+
+        // Concatenate prefix with command name
+        strcat(first_cat, command_name);
+
+        // Allocate memory for the second concatenation
+        char *second_cat = malloc(sizeof(char) * (strlen(first_cat) + strlen(suffix) + 1));
+
+        // Make sure memory was successfully allocated
+        if (second_cat == NULL)
+        {
+            free(first_cat);
+            result.message = "Error 6: Could not allocate memory";
+            result.error = 6;
+            return result;
+        }
+
+        // Copy first string to allocated memory
+        for (int i = 0; i < (strlen(first_cat) + 1); i++)
+        {
+            second_cat[i] = first_cat[i];
+        }
+
+        // Concatenate the first string and the suffix
+        strcat(second_cat, suffix);
+        // Free the first string's memory as it is not needed anymore
+        free(first_cat);
+        //printf("%s\n", second_cat);
+        // Open command information file
+        FILE *file = fopen(second_cat, "r");
+        // Make sure file could be opened
+        if (file == NULL)
+        {
+            free(second_cat);
+            result.message = "Error 5: Could not open template";
+            result.error = 5;
+            return result;
+        }
+        
+        // Print file contents
+        char c;
+        while (fread(&c, sizeof(char), 1, file) != 0)
+        {
+            printf("%c", c);
+        }
+
+        // Add a line break in case there is none at the end of the file
+        print("");
+        // Free second string's memory as it is no longer needed and close the file
+        free(second_cat);
+        fclose(file);
+        result.message = "";
+        result.error = 0;
+        return result;
+}
 
 int main(int argc, char *argv[])
 {
@@ -117,73 +202,12 @@ int main(int argc, char *argv[])
     // If the user uses the help flag, provide information about the command
     if (using_help_flag)
     {
-        // Note: Will probably put this into a function, haven't come to it since I had to fix it first
-        char *prefix = "command-templates/";
-        char *suffix = ".txt";
-        char *command_name = commands[command_index].name;
-        // Allocate memory for the first concatenation
-        char *first_cat = malloc(sizeof(char) * (strlen(prefix) + strlen(command_name) + 1));
-
-        // Make sure memory was successfully allocated
-        if (first_cat == NULL)
+        // Provide information about the command
+        error_message result = get_help(command_index);
+        if (result.error)
         {
-            print("Error 6: Could not allocate memory");
-            return 6;
+            print(result.message);
         }
-
-        // Copy the prefix to the allocated memory
-        for (int i = 0; i < (strlen(prefix) + 1); i++)
-        {
-            first_cat[i] = prefix[i];
-        }
-
-        // Concatenate prefix with command name
-        strcat(first_cat, command_name);
-
-        // Allocate memory for the second concatenation
-        char *second_cat = malloc(sizeof(char) * (strlen(first_cat) + strlen(suffix) + 1));
-
-        // Make sure memory was successfully allocated
-        if (second_cat == NULL)
-        {
-            free(first_cat);
-            print("Error 6: Could not allocate memory");
-            return 6;
-        }
-
-        // Copy first string to allocated memory
-        for (int i = 0; i < (strlen(first_cat) + 1); i++)
-        {
-            second_cat[i] = first_cat[i];
-        }
-
-        // Concatenate the first string and the suffix
-        strcat(second_cat, suffix);
-        // Free the first string's memory as it is not needed anymore
-        free(first_cat);
-        //printf("%s\n", second_cat);
-        // Open command information file
-        FILE *file = fopen(second_cat, "r");
-        // Make sure file could be opened
-        if (file == NULL)
-        {
-            free(second_cat);
-            print("Error 5: Could not open template");
-            return 5;
-        }
-        
-        // Print file contents
-        char c;
-        while (fread(&c, sizeof(char), 1, file) != 0)
-        {
-            printf("%c", c);
-        }
-
-        // Add a line break in case there is none at the end of the file
-        print("");
-        // Free second string's memory as it is no longer needed and close the file
-        free(second_cat);
-        fclose(file);
-        return 0;
+        return result.error;
     }
 }
