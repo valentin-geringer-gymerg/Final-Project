@@ -132,12 +132,12 @@ int main(int argc, char *argv[])
 
     if (!strcmp(command_to_run, "find-content"))
     {
-        //result = find_content();
+        result = find_content(options, flags);
     }
 
     if (!strcmp(command_to_run, "find-name"))
     {
-        //result = find_name();
+        result = find_name(options, flags);
     }
 
     print(result.message);
