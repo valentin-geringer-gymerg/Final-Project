@@ -1,1 +1,0 @@
-error_message find_name();

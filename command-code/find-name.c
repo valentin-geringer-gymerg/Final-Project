@@ -1,7 +1,9 @@
-#include "find-name.h"
 #include "../helpers.h"
 
-error_message find_name()
+error_message find_name(char* options[], char* flags[])
 {
-    print("find-name");
+    error_message result;
+    result.error = 0;
+    result.message = "njknj";
+    return result;
 }

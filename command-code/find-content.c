@@ -1,7 +1,9 @@
-#include "find-content.h"
 #include "../helpers.h"
 
-error_message find_content()
+error_message find_content(char* options[], char* flags[])
 {
-    print("find-content");
+    error_message result;
+    result.error = 0;
+    result.message = "njknj";
+    return result;
 }
