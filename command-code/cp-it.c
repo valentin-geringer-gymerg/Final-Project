@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include "../helpers.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,7 +9,9 @@ int get_dot_position(char* name);
 
 int get_num_start(char* name, int dot_ind);
 
-int get_file_number(char* name, int dot_ind, int num_start);
+long get_file_number(char* name, int dot_ind, int num_start);
+
+int get_digits(int num);
 
 error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path)
 {
@@ -33,9 +36,17 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
     int dot_ind = get_dot_position(file_path);
     int num_start = get_num_start(file_path, dot_ind);
 
+    char prefix[num_start];
+    
+
     int start = (opc >= 3) ? atoi(options[2]) : get_file_number(file_path, dot_ind, num_start);
 
-    
+    char number[get_digits(start + amount - 1)];
+
+    for (int i = start; (i - start) < amount; i++)
+    {
+
+    }
 
     result.error = 0;
     result.message = "";
@@ -85,7 +96,7 @@ int get_num_start(char* name, int dot_ind)
 
 }
 
-int get_file_number(char* name, int dot_ind, int num_start)
+long get_file_number(char* name, int dot_ind, int num_start)
 {
     // Converts the number before the dot in the file name to an int
 
@@ -101,8 +112,31 @@ int get_file_number(char* name, int dot_ind, int num_start)
         number[i-num_start] = name[i];
     }
     number[dot_ind-num_start] = '\0';
-    int file_number = atoi(number);
+    long file_number = atol(number);
 
     return file_number + 1;
 
+}
+
+int get_digits(int num)
+{
+    // Gets the amount of digits a number has
+    printf("%i", num);
+
+    int digits = -1;
+
+    for (int i = 0; num != 0; i++)
+    {
+        if (num == pow(10, i))
+        {
+            digits += 2;
+            break;
+        }
+
+        num = num/pow(10, i);
+        digits++;
+    }
+
+    printf("%i", digits);
+    return digits;
 }
