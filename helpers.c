@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "helpers.h"
 
 void print(char text[]){
@@ -27,4 +29,6 @@ char* concat(char* first, char* second)
 
         // Concatenate first string with second string
         strcat(cat, second);
+
+        return cat;
 }

@@ -153,46 +153,27 @@ error_message get_help(int command_index)
         char *suffix = ".txt";
         char *command_name = commands[command_index].name;
         // Allocate memory for the first concatenation
-        char *first_cat = malloc(sizeof(char) * (strlen(prefix) + strlen(command_name) + 1));
+        
+        char *first_cat = concat(prefix, command_name);
 
-        // Make sure memory was successfully allocated
-        if (first_cat == NULL)
-        {   
-            result.message = "Error 6: Could not allocate memory";
-            result.error =  6;
-            return result;
-        }
-
-        // Copy the prefix to the allocated memory
-        for (int i = 0; i < (strlen(prefix) + 1); i++)
+        if (!strcmp(first_cat, ""))
         {
-            first_cat[i] = prefix[i];
-        }
-
-        // Concatenate prefix with command name
-        strcat(first_cat, command_name);
-
-        // Allocate memory for the second concatenation
-        char *second_cat = malloc(sizeof(char) * (strlen(first_cat) + strlen(suffix) + 1));
-
-        // Make sure memory was successfully allocated
-        if (second_cat == NULL)
-        {
-            free(first_cat);
-            result.message = "Error 6: Could not allocate memory";
+            result.message = "Error 6: Could not concatenate strings";
             result.error = 6;
             return result;
         }
 
-        // Copy first string to allocated memory
-        for (int i = 0; i < (strlen(first_cat) + 1); i++)
-        {
-            second_cat[i] = first_cat[i];
-        }
+        // Allocate memory for the second concatenation
 
         // Concatenate the first string and the suffix
-        strcat(second_cat, suffix);
-        // Free the first string's memory as it is not needed anymore
+        char *second_cat = concat(first_cat, suffix);
+        
+        if (!strcmp(second_cat, ""))
+        {
+            result.message = "Error 6: Could not concatenate strings";
+            result.error = 6;
+            return result;
+        }
         free(first_cat);
         // Open command information file
         FILE *file = fopen(second_cat, "r");
