@@ -127,17 +127,17 @@ int main(int argc, char *argv[])
     char* command_to_run = commands[command_index].name;
     if (!strcmp(command_to_run, "cp-it"))
     {   
-        result = cp_it(options, flags, cur_path);
+        result = cp_it(options, options_cur_index, flags, flags_cur_index, cur_path);
     }
 
     if (!strcmp(command_to_run, "find-content"))
     {
-        result = find_content(options, flags);
+        result = find_content(options, options_cur_index, flags, options_cur_index);
     }
 
     if (!strcmp(command_to_run, "find-name"))
     {
-        result = find_name(options, flags);
+        result = find_name(options, options_cur_index, flags, flags_cur_index);
     }
 
     print(result.message);

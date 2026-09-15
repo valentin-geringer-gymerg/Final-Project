@@ -6,6 +6,6 @@ typedef struct
     int error;
 } error_message;
 
-error_message cp_it(char* options[], char* flags[], char* path);
-error_message find_content(char* options[], char* flags[]);
-error_message find_name(char* options[], char* flags[]);
+error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path);
+error_message find_content(char* options[], int opc, char* flags[], int flc);
+error_message find_name(char* options[], int opc, char* flags[], int flc);
