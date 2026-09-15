@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include "../helpers.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,6 +38,7 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
     
 
     result.error = 0;
+    result.message = "";
     result.message = "";
     return result;
 }
