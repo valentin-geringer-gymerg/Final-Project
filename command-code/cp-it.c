@@ -1,6 +1,5 @@
 #include <ctype.h>
 #include "../helpers.h"
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,6 +11,8 @@ int get_num_start(char* name, int dot_ind);
 long get_file_number(char* name, int dot_ind, int num_start);
 
 int get_digits(int num);
+
+int tenToThe(int n);
 
 error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path)
 {
@@ -36,17 +37,23 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
     int dot_ind = get_dot_position(file_path);
     int num_start = get_num_start(file_path, dot_ind);
 
+    char* file_name = options[0];
+
     char prefix[num_start];
+
+    for (int i = 0; i < (num_start); i++)
+    {
+        prefix[i] = file_name[i];
+    }
+
+    prefix[num_start] = '\0';
     
 
     int start = (opc >= 3) ? atoi(options[2]) : get_file_number(file_path, dot_ind, num_start);
 
     char number[get_digits(start + amount - 1)];
 
-    for (int i = start; (i - start) < amount; i++)
-    {
-
-    }
+    
 
     result.error = 0;
     result.message = "";
@@ -118,23 +125,29 @@ long get_file_number(char* name, int dot_ind, int num_start)
 
 }
 
+int tenToThe(int n)
+{
+    int res = 1;
+
+    while (n != 0)
+    {
+        res *= 10;
+        n -= 1;
+    }
+
+    return res;
+}
+
 int get_digits(int num)
 {
     // Gets the amount of digits a number has
-    printf("%i", num);
+    printf("%i\n", num);
 
-    int digits = -1;
+    int digits = 0;
 
-    for (int i = 0; num != 0; i++)
+    for (int i = 0; tenToThe(i) <= num; i++)
     {
-        if (num == pow(10, i))
-        {
-            digits += 2;
-            break;
-        }
-
-        num = num/pow(10, i);
-        digits++;
+        digits += 1;
     }
 
     printf("%i", digits);
