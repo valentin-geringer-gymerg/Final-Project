@@ -3,10 +3,6 @@
 #include <string.h>
 #include "helpers.h"
 
-void print(char text[]){
-    printf("%s\n", text);
-}
-
 char* concat(char* first, char* second)
 {
     // Concatenates two strings such that first is followed by second
@@ -31,4 +27,60 @@ char* concat(char* first, char* second)
         strcat(cat, second);
 
         return cat;
+}
+
+int get_digits(int num)
+{
+    // Gets the amount of digits a number has
+
+    int digits = 0;
+
+    for (int i = 0; tenToThe(i) <= num; i++)
+    {
+        digits += 1;
+    }
+    return digits;
+}
+
+char* itoa(int num, char* target)
+{
+    int digits = get_digits(num);
+
+    for (int i = 1; num != 0; i++)
+    {
+        int digit = num % tenToThe(i);
+        num -= digit;
+        digit = digit / tenToThe(i - 1);
+        target[i] = todigit(digit);
+    }
+    target[digits] = '\0';
+    return target;
+}
+
+void print(char text[])
+{
+    printf("%s\n", text);
+}
+
+int tenToThe(int n)
+{
+    int res = 1;
+
+    while (n != 0)
+    {
+        res *= 10;
+        n -= 1;
+    }
+
+    return res;
+}
+
+char todigit(int digit)
+{   
+    // Make sure digit is a number from 0 to 9 
+    digit = (digit >= 0) ? digit : (digit * (-1));
+    digit = (digit < 10) ? digit : (digit % 10);
+
+    char res = digit + 48;
+    return res;
 }

@@ -10,10 +10,6 @@ int get_num_start(char* name, int dot_ind);
 
 long get_file_number(char* name, int dot_ind, int num_start);
 
-int get_digits(int num);
-
-int tenToThe(int n);
-
 error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path)
 {
     error_message result;
@@ -133,30 +129,4 @@ long get_file_number(char* name, int dot_ind, int num_start)
 
     return file_number;
 
-}
-
-int tenToThe(int n)
-{
-    int res = 1;
-
-    while (n != 0)
-    {
-        res *= 10;
-        n -= 1;
-    }
-
-    return res;
-}
-
-int get_digits(int num)
-{
-    // Gets the amount of digits a number has
-
-    int digits = 0;
-
-    for (int i = 0; tenToThe(i) <= num; i++)
-    {
-        digits += 1;
-    }
-    return digits;
 }
