@@ -49,11 +49,21 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
     prefix[num_start] = '\0';
     
 
-    int start = (opc >= 3) ? atoi(options[2]) : get_file_number(file_path, dot_ind, num_start);
+    int start = (opc >= 3) ? atoi(options[2]) : get_file_number(file_path, dot_ind, num_start) + 1;
 
-    char number[get_digits(start + amount - 1)];
+    int max_digits = get_digits(start + amount - 1);
 
-    
+    char number[max_digits + 1];
+
+    int suffix_length = strlen(file_name) - (num_start + get_digits(start-1)) + 1;
+    char suffix[suffix_length];
+
+    for (int i = 0; i < (suffix_length); i++)
+    {
+        suffix[i] = file_name[i + num_start - 1 + get_digits(start - 1)+1];
+    }
+
+    print(suffix);
 
     result.error = 0;
     result.message = "";
@@ -121,7 +131,7 @@ long get_file_number(char* name, int dot_ind, int num_start)
     number[dot_ind-num_start] = '\0';
     long file_number = atol(number);
 
-    return file_number + 1;
+    return file_number;
 
 }
 
@@ -141,7 +151,6 @@ int tenToThe(int n)
 int get_digits(int num)
 {
     // Gets the amount of digits a number has
-    printf("%i\n", num);
 
     int digits = 0;
 
@@ -149,7 +158,5 @@ int get_digits(int num)
     {
         digits += 1;
     }
-
-    printf("%i", digits);
     return digits;
 }
