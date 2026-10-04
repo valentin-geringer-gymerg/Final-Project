@@ -42,17 +42,22 @@ int get_digits(int num)
     return digits;
 }
 
-char* itoa(int num, char* target)
+char* itoa(int num)
 {
     int digits = get_digits(num);
 
-    for (int i = 1; num != 0; i++)
+    char* target = malloc(sizeof(char) * (digits + 1));
+
+    for (int i = 0; num != 0; i++)
     {
-        int digit = num % tenToThe(i);
+        
+        int digit = num % tenToThe(i + 1);
         num -= digit;
-        digit = digit / tenToThe(i - 1);
-        target[i] = todigit(digit);
+        digit = digit / tenToThe(i);
+        printf("%i, %i\n", digits -1 -i, digit);
+        target[digits -1 - i] = todigit(digit);
     }
+
     target[digits] = '\0';
     return target;
 }

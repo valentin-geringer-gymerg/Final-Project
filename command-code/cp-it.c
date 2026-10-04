@@ -59,7 +59,7 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
         suffix[i] = file_name[i + num_start - 1 + get_digits(start - 1)+1];
     }
 
-    print(suffix);
+    print(itoa(235));
 
     result.error = 0;
     result.message = "";

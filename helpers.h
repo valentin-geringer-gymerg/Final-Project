@@ -12,7 +12,7 @@ error_message find_name(char* options[], int opc, char* flags[], int flc);
 // Functions for code
 char* concat(char* first, char* second);
 int get_digits(int num);
-char* itoa(int num, char* target);
+char* itoa(int num);
 void print(char text[]);
 int tenToThe(int n);
 char todigit(int digit);
