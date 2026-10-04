@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 typedef struct
 {
@@ -82,7 +83,6 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
     {
         char* first_cat = concat(prefix, itoa(start+i));
         char* second_cat = concat(first_cat, suffix);
-        print(second_cat);
         copies[i].name = malloc(sizeof(second_cat));
         free(first_cat);
         for (int j = 0, length = strlen(second_cat) + 1; j < length; j++)
@@ -90,9 +90,22 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
             copies[i].name[j] = second_cat[j];
         }
         free(second_cat);
-        print(copies[i].name);
 
         // TODO: Check whether file already exist and ask user whether to copy anyways or not
+        if (access(copies[i].name, F_OK) != 0)
+        {
+            copies[i].copy = 1;
+            continue;
+        }
+        char confirmation;
+        printf("%s already exists. Do you want to copy it anyways? [y/n]", copies[i].name);
+        scanf("%c", &confirmation);
+        if (confirmation != 'y')
+        {
+            copies[i].copy = 1;
+            continue;
+        }
+        copies[i].copy = 0;
     }
 
     char c;
