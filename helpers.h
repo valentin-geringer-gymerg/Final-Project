@@ -1,3 +1,5 @@
+typedef unsigned char BYTE;
+
 typedef struct
 {
     char* message;

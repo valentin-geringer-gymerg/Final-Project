@@ -48,13 +48,18 @@ char* itoa(int num)
 
     char* target = malloc(sizeof(char) * (digits + 1));
 
+    if (num == 0)
+    {
+        target[0] = todigit(0);
+        return target;
+    }
+
     for (int i = 0; num != 0; i++)
     {
         
         int digit = num % tenToThe(i + 1);
         num -= digit;
         digit = digit / tenToThe(i);
-        printf("%i, %i\n", digits -1 -i, digit);
         target[digits -1 - i] = todigit(digit);
     }
 

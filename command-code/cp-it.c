@@ -4,6 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct
+{
+    int copy;
+    char* name;
+} file_info;
+
+
 int get_dot_position(char* name);
 
 int get_num_start(char* name, int dot_ind);
@@ -44,25 +51,58 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
 
     prefix[num_start] = '\0';
     
+    int file_number = get_file_number(file_path, dot_ind, num_start);
 
-    int start = (opc >= 3) ? atoi(options[2]) : get_file_number(file_path, dot_ind, num_start) + 1;
+    int start = (opc >= 3) ? atoi(options[2]) : file_number + 1;
 
     int max_digits = get_digits(start + amount - 1);
 
     char number[max_digits + 1];
 
-    int suffix_length = strlen(file_name) - (num_start + get_digits(start-1)) + 1;
+    int suffix_length = strlen(file_name) - (num_start + get_digits(file_number)) + 1;
     char suffix[suffix_length];
 
     for (int i = 0; i < (suffix_length); i++)
     {
-        suffix[i] = file_name[i + num_start - 1 + get_digits(start - 1)+1];
+        suffix[i] = file_name[i + num_start + get_digits(file_number)];
+    }
+    
+    FILE *og_file = fopen(file_name, "r");
+
+    if (og_file == NULL)
+    {
+        result.error = 10;
+        result.message = "cp-it: Error 10: Could not open file";
+        return result;
     }
 
-    print(itoa(235));
+    file_info copies[amount];
+
+    for (int i = 0; i < amount; i++)
+    {
+        char* first_cat = concat(prefix, itoa(start+i));
+        char* second_cat = concat(first_cat, suffix);
+        print(second_cat);
+        copies[i].name = malloc(sizeof(second_cat));
+        free(first_cat);
+        for (int j = 0, length = strlen(second_cat) + 1; j < length; j++)
+        {
+            copies[i].name[j] = second_cat[j];
+        }
+        free(second_cat);
+        print(copies[i].name);
+
+        // TODO: Check whether file already exist and ask user whether to copy anyways or not
+    }
+
+    char c;
+
+    while (fread(&c, sizeof(BYTE), 1, og_file) != 0)
+    {
+
+    } 
 
     result.error = 0;
-    result.message = "";
     result.message = "";
     return result;
 }
@@ -115,7 +155,7 @@ long get_file_number(char* name, int dot_ind, int num_start)
 
     if (num_start == -1)
     {
-        return 0;
+        return -1;
     }
 
     char number[dot_ind - num_start + 1];
