@@ -11,6 +11,15 @@ typedef struct
     char* name;
 } file_info;
 
+void clear_stdin(void)
+{
+    int c;
+    while(!(c == '\n' || c == EOF))
+    {
+        c = getchar();
+    };
+}
+
 
 int get_dot_position(char* name);
 
@@ -91,7 +100,6 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
         }
         free(second_cat);
 
-        // TODO: Check whether file already exist and ask user whether to copy anyways or not
         if (access(copies[i].name, F_OK) != 0)
         {
             copies[i].copy = 1;
@@ -100,7 +108,8 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
         char confirmation;
         printf("%s already exists. Do you want to copy it anyways? [y/n]", copies[i].name);
         scanf("%c", &confirmation);
-        if (confirmation != 'y')
+        clear_stdin();
+        if (confirmation == 'y')
         {
             copies[i].copy = 1;
             continue;
@@ -109,6 +118,36 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
     }
 
     char c;
+
+    FILE* target_files[amount];
+
+    int file_counter = 0;
+
+    for (int i = 0; i < amount; i++)
+    {
+        if (!copies[i].copy)
+        {
+            continue;
+        }
+
+        FILE* next = fopen(copies[i].name, "w");
+
+        if (next == NULL)
+        {
+            fclose(og_file);
+            // Close previously opened files
+            for (int j = 0; j < file_counter; j++)
+            {
+                fclose(target_files[j]);
+            }
+        }
+
+        target_files[file_counter] = next;
+
+        file_counter += 1;
+
+
+    }
 
     while (fread(&c, sizeof(BYTE), 1, og_file) != 0)
     {
