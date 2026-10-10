@@ -157,6 +157,13 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
         }
     } 
 
+    fclose(og_file);
+
+    for (int i = 0; i < file_counter; i++)
+    {
+        fclose(target_files[i]);
+    }
+
     result.error = 0;
     result.message = "";
     return result;
