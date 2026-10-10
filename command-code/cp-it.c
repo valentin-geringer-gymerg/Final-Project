@@ -151,7 +151,10 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
 
     while (fread(&c, sizeof(BYTE), 1, og_file) != 0)
     {
-
+        for (int i = 0; i < file_counter; i++)
+        {
+            fwrite(&c, sizeof(BYTE), 1, target_files[i]);
+        }
     } 
 
     result.error = 0;
