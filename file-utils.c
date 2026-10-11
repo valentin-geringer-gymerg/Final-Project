@@ -19,7 +19,7 @@ typedef struct
 
 command commands[] = 
 {
-    {"cp-it", 2, 4, 1},
+    {"cp-it", 2, 4, 2},
     {"find-content", 1, 2, 3},
     {"find-name", 1, 2, 3},
 };
