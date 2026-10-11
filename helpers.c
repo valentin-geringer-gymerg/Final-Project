@@ -29,6 +29,15 @@ char* concat(char* first, char* second)
         return cat;
 }
 
+void clear_stdin(void)
+{
+    int c;
+    while(!(c == '\n' || c == EOF))
+    {
+        c = getchar();
+    };
+}
+
 int get_digits(int num)
 {
     // Gets the amount of digits a number has

@@ -10,3 +10,4 @@ directory: optional (The directory the files should be copied into, if not given
 
 Flags:
 -h: Show information and template
+-v: Make command verbose

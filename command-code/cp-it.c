@@ -11,16 +11,6 @@ typedef struct
     char* name;
 } file_info;
 
-void clear_stdin(void)
-{
-    int c;
-    while(!(c == '\n' || c == EOF))
-    {
-        c = getchar();
-    };
-}
-
-
 int get_dot_position(char* name);
 
 int get_num_start(char* name, int dot_ind);
@@ -47,11 +37,22 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
         return result;
     }
 
+    int verbose = 0;
+
+    for (int i = 0; i < flc; i++)
+    {
+        if (!strcmp("-v", flags[i]))
+        {
+            verbose = 1;
+        }
+    }
+
     int dot_ind = get_dot_position(file_path);
     int num_start = get_num_start(file_path, dot_ind);
+    num_start = (num_start != -1) ? num_start : 0;
 
     char* file_name = options[0];
-
+    printf("%i, %i\n", dot_ind, num_start);
     char prefix[num_start];
 
     for (int i = 0; i < (num_start); i++)
@@ -65,10 +66,6 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
 
     int start = (opc >= 3) ? atoi(options[2]) : file_number + 1;
 
-    int max_digits = get_digits(start + amount - 1);
-
-    char number[max_digits + 1];
-
     int suffix_length = strlen(file_name) - (num_start + get_digits(file_number)) + 1;
     char suffix[suffix_length];
 
@@ -78,6 +75,11 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
     }
     
     FILE *og_file = fopen(file_name, "r");
+
+    if (verbose)
+    {
+        printf("Opened file %s to copy\n", file_name);
+    }
 
     if (og_file == NULL)
     {
@@ -109,12 +111,12 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
         printf("%s already exists. Do you want to copy it anyways? [y/n]", copies[i].name);
         scanf("%c", &confirmation);
         clear_stdin();
-        if (confirmation == 'y')
+        copies[i].copy = (confirmation == 'y') ? 1 : 0;
+        if (verbose)
         {
-            copies[i].copy = 1;
-            continue;
+            char* copy_text = (copies[i].copy) ? "" : " not";
+            printf("Marked file %s to%s be copied\n", copies[i].name, copy_text);
         }
-        copies[i].copy = 0;
     }
 
     char c;
@@ -131,6 +133,11 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
         }
 
         FILE* next = fopen(copies[i].name, "w");
+        
+        if (verbose)
+        {
+            printf("Opened file %s to copy into\n", copies[i].name);
+        }
 
         if (next == NULL)
         {
@@ -140,6 +147,9 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
             {
                 fclose(target_files[j]);
             }
+            result.error = 11;
+            result.message = "cp-it: Error 11: Could not open file";
+            return result;
         }
 
         target_files[file_counter] = next;
@@ -154,6 +164,10 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
         for (int i = 0; i < file_counter; i++)
         {
             fwrite(&c, sizeof(BYTE), 1, target_files[i]);
+            if (verbose)
+            {
+                printf("Copied byte into %p\n", target_files[i]);
+            }
         }
     } 
 
@@ -171,11 +185,13 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
 
 int get_dot_position(char* name)
 {
-    //Get the position of the dot in the file name
+    // Get the position of the dot in the file name
     int dot_ind = -1;
 
+    // Get the file name's length
     int name_length = strlen(name);
 
+    // Loop through each character until a dot is found
     for (int i = 0; i < name_length; i++)
     {
         if (name[i] == '.')
@@ -183,11 +199,6 @@ int get_dot_position(char* name)
             dot_ind = i;
             break;
         }
-    }
-
-    if (dot_ind == -1)
-    {
-        dot_ind = name_length + 1;
     }
 
     return dot_ind;
@@ -198,7 +209,9 @@ int get_num_start(char* name, int dot_ind)
     //Gets the position of the first digit of the number in the file before the dot
     int num_start = -1;
 
-    for (int i = (dot_ind - 1); i >= 0; i--)
+    int i_start = (dot_ind != -1) ? (dot_ind - 1) : (strlen(name) - 1);
+
+    for (int i = (i_start); i >= 0; i--)
     {
         if (!isdigit(name[i]))
         {
@@ -215,10 +228,12 @@ long get_file_number(char* name, int dot_ind, int num_start)
 {
     // Converts the number before the dot in the file name to an int
 
-    if (num_start == -1)
+    if ((num_start == dot_ind) || (num_start == strlen(name)))
     {
         return -1;
     }
+
+    dot_ind = (dot_ind != -1) ? dot_ind : strlen(name);
 
     char number[dot_ind - num_start + 1];
 
