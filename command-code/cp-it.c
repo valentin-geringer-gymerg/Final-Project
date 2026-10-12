@@ -52,7 +52,6 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
     num_start = (num_start != -1) ? num_start : 0;
 
     char* file_name = options[0];
-    printf("%i, %i\n", dot_ind, num_start);
     char prefix[num_start];
 
     for (int i = 0; i < (num_start); i++)
