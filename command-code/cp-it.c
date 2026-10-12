@@ -19,6 +19,7 @@ long get_file_number(char* name, int dot_ind, int num_start);
 
 error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path)
 {
+    // Make sure the amount of options provideds is correct
     error_message result;
     if (opc < 2)
     {
@@ -30,6 +31,7 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
     char* file_path = options[0];
     int amount = atoi(options[1]);
 
+    // Make sure amount of files is a positive integer
     if (!(amount > 0))
     {
         result.error = 9;
@@ -39,6 +41,7 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
 
     int verbose = 0;
 
+    // Loop though the flagfs and set variables accordingly
     for (int i = 0; i < flc; i++)
     {
         if (!strcmp("-v", flags[i]))
@@ -52,6 +55,7 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
     num_start = (num_start != -1) ? num_start : 0;
 
     char* file_name = options[0];
+    // Get the file's prefix before the number
     char prefix[num_start];
 
     for (int i = 0; i < (num_start); i++)
@@ -65,6 +69,7 @@ error_message cp_it(char* options[], int opc, char* flags[], int flc, char* path
 
     int start = (opc >= 3) ? atoi(options[2]) : file_number + 1;
 
+    // Get the file's suffix after the number
     int suffix_length = strlen(file_name) - (num_start + get_digits(file_number)) + 1;
     char suffix[suffix_length];
 
