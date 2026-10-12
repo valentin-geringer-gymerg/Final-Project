@@ -8,6 +8,7 @@ directory: optional (Defaults to directory command is ran in)
 
 Flags:
 
+-a: Display the files' absolute path
 -c: Make search case-insensitive
 -h: Show information and template
 -s: Search for files that have the specified name in their name as a substring instead

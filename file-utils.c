@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
 
     if (!strcmp(command_to_run, "find-name"))
     {
-        result = find_name(options, options_cur_index, flags, flags_cur_index);
+        result = find_name(options, options_cur_index, flags, flags_cur_index, cur_path);
     }
 
     print(result.message);

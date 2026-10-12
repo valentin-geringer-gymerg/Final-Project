@@ -1,14 +1,16 @@
 #include <dirent.h>
 #include "../helpers.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-error_message find_name(char* options[], int opc, char* flags[], int flc)
+error_message find_name(char* options[], int opc, char* flags[], int flc, char* path)
 {
     error_message result;
 
     int case_sense = 1;
     int sub = 0;
+    int absolute_path = 0;
 
     for (int i = 0; i < flc; i++)
     {
@@ -20,6 +22,11 @@ error_message find_name(char* options[], int opc, char* flags[], int flc)
         if (!strcmp("-s", flags[i]))
         {
             sub = 1;
+        }
+
+        if (!strcmp("-a", flags[i]))
+        {
+            absolute_path = 1;
         }
     }
 
@@ -65,10 +72,26 @@ error_message find_name(char* options[], int opc, char* flags[], int flc)
                 break;
         }
         if (is_equal){
-            printf("%s\n", ent->d_name);
+            char* text_to_print;
+            if (absolute_path){
+                char* first_cat = concat(path, "/");
+                text_to_print = concat(first_cat , ent->d_name);
+                free(first_cat);
+            }
+            else 
+            {
+            text_to_print = ent->d_name;
+            }
+            printf("%s\n", text_to_print);
+            if (absolute_path)
+            {
+                free(text_to_print);
+            }
         }
         ent = readdir(dir);
     }
+
+    closedir(dir);
 
     result.error = 0;
     result.message = "";
