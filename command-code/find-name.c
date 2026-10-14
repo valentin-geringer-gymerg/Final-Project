@@ -8,6 +8,13 @@ error_message find_name(char* options[], int opc, char* flags[], int flc, char* 
 {
     error_message result;
 
+    if (opc < 1)
+    {
+        result.error = 13;
+        result.message = "find-name: Too few options given";
+        return result;
+    }
+
     int case_sense = 1;
     int sub = 0;
     int absolute_path = 0;
@@ -31,7 +38,7 @@ error_message find_name(char* options[], int opc, char* flags[], int flc, char* 
     }
 
     char* directory = (opc >= 2) ? options[1] : "./";
-    DIR *dir = opendir(directory);
+    DIR *dir = opendir("jhghjgjkkghghjki");
     if (dir == NULL)
     {
         result.error = 12;
